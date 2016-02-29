@@ -11,7 +11,7 @@ def read_csv(filename):
 		return list(reader)
 
 product_data = read_csv('C:/Users/dano/Desktop/ProductSuccessAnalysis/UpdatedProductSuccess.csv')
-
+feature_array = ['Connectivity','Advanced','Satisfies Need','Well-Priced','Well-Marketed','Usability','Convenient','Design','Necessity','Superiority','Personalization']
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
@@ -20,7 +20,7 @@ def factor_processed(array,featureName):
 	for row in array:
 		feature_array.append(row[featureName])
 	return feature_array
-
+"""
 connectivity = factor_processed(product_data,"Connectivity")
 advanced = factor_processed(product_data,"Advanced")
 satisfies_need = factor_processed(product_data,"Satisfies Need")
@@ -32,17 +32,17 @@ design = factor_processed(product_data,"Design")
 necessity = factor_processed(product_data,"Necessity")
 superiority = factor_processed(product_data,"Superiority")
 personalization = factor_processed(product_data,"Personalization")
-
+"""
 product_array = []
 for row in product_data:
 	product_array.append(row['Product'])
 
 ind = np.arange(18)
-width = 0.3
+width = 0.01
 
 #connct_bar = ax.bar(ind,  connectivity,product_array, width, color='black')
-
-for c, z in zip(['r', 'g', 'b', 'y'], [30, 20, 10, 0]):
+"""
+for c, z in zip(['r', 'g', 'b', 'y'], [30, 20, 10, 0]): second one is where it is on Y axis
     xs = np.arange(20)
     ys = np.random.rand(20)
 
@@ -51,6 +51,13 @@ for c, z in zip(['r', 'g', 'b', 'y'], [30, 20, 10, 0]):
     cs = [c] * len(xs)
     cs[0] = 'c'
     ax.bar(xs, ys, connectivity, zdir='y', color=cs, alpha=0.8)
+"""
+for feature in feature_array:
+	xs = np.arange(20)
+	ys = np.random.rand(20)
+
+	feature = factor_processed(product_data,feature)
+	ax.bar(xs,ys,feature,zdir='y',color='black',alpha=0.8)
 
 """
 adv_bar = ax.bar(ind+width, advanced, width, color='grey')

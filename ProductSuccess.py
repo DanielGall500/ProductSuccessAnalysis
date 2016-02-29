@@ -2,31 +2,66 @@ import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import numpy as np
 from numpy.random import normal
+import unicodecsv as csv
 
-data = np.array([1,2,2,3,4])
+def read_csv(filename):
+	with open(filename, 'rb') as f:
+		reader = csv.DictReader(f)
+		return list(reader)
+
+product_data = read_csv('C:/Users/dano/Desktop/ProductSuccessAnalysis/UpdatedProductSuccess.csv')
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-N = 5
-menMeans = [18, 35, 30, 35, 27]
-menStd = [2, 3, 4, 1, 2]
-womenMeans = []
-womenStd = []
+def factor_processed(array,featureName):
+	feature_array = []
+	for row in array:
+		feature_array.append(row[featureName])
+	return feature_array
 
-ind = np.arange(N)
-width = 0.35
+connectivity = factor_processed(product_data,"Connectivity")
+advanced = factor_processed(product_data,"Advanced")
+satisfies_need = factor_processed(product_data,"Satisfies Need")
+well_priced = factor_processed(product_data,"Well-Priced")
+well_marketed = factor_processed(product_data,"Well-Marketed")
+usability = factor_processed(product_data,"Usability")
+convenient = factor_processed(product_data,"Convenient")
+design = factor_processed(product_data,"Design")
+necessity = factor_processed(product_data,"Necessity")
+superiority = factor_processed(product_data,"Superiority")
+personalization = factor_processed(product_data,"Personalization")
 
-rects1 = ax.bar(ind, menMeans, width, color='black',yerr=menStd)
+ind = np.arange(18)
+width = 0.1
 
-ax.set_xlim(-width,len(ind)+width)
-ax.set_ylim(0,45)
+connct_bar = ax.bar(ind, connectivity, width, color='black')
+adv_bar = ax.bar(ind+width, advanced, width, color='grey')
+need_bar = ax.bar(ind+(width * 2), advanced, width, color='red')
+price_bar = ax.bar(ind+(width * 3), advanced, width, color='green')
+marketed_bar = ax.bar(ind+(width * 4), advanced, width, color='blue')
+usability_bar = ax.bar(ind+(width * 5), advanced, width, color='yellow')
+convenient_bar = ax.bar(ind+(width * 6), advanced, width, color='pink')
+design_bar = ax.bar(ind+(width * 7), advanced, width, color='cyan')
+necessity_bar = ax.bar(ind+(width * 8), advanced, width, color='orange')
+super_bar = ax.bar(ind+(width * 9), advanced, width, color='turquoise')
+person_bar = ax.bar(ind+(width * 10), advanced, width, color='purple')
+
+
+ax.set_xlim(-width,len(ind)+(width * 10))
+ax.set_ylim(0,20)
 ax.set_ylabel("Frequency")
 ax.set_title("Patterns of product success")
 
-xTickMarks = ['Group' + str(i) for i in range(1,6)]
+xTickMarks = []
+for row in product_data:
+	xTickMarks.append(row['Product'])
+
 ax.set_xticks(ind+width)
+
 xtickNames = ax.set_xticklabels(xTickMarks)
-plt.setp(xtickNames,rotation=45,fontsize=10)
+plt.setp(xtickNames,fontsize=10)
+
+#ax.legend( (ps_bar[0]), ('Connectivity') )
 
 plt.show()

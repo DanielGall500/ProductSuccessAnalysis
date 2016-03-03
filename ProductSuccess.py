@@ -13,7 +13,7 @@ def read_csv(filename):
 product_data = read_csv('C:/Users/dano/Desktop/ProductSuccessAnalysis/UpdatedProductSuccess.csv')
 feature_array = ['Connectivity','Advanced','Satisfies Need','Well-Priced','Well-Marketed','Usability','Convenient','Design','Necessity','Superiority','Personalization']
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111)
 
 def factor_processed(array,featureName):
 	feature_array = []
@@ -38,7 +38,7 @@ for row in product_data:
 	product_array.append(row['Product'])
 
 ind = np.arange(18)
-width = 0.01
+width = 0.1
 
 #connct_bar = ax.bar(ind,  connectivity,product_array, width, color='black')
 """
@@ -52,13 +52,17 @@ for c, z in zip(['r', 'g', 'b', 'y'], [30, 20, 10, 0]): second one is where it i
     cs[0] = 'c'
     ax.bar(xs, ys, connectivity, zdir='y', color=cs, alpha=0.8)
 """
+it = 1
 for feature in feature_array:
-	xs = np.arange(20)
-	ys = np.random.rand(20)
 
-	feature = factor_processed(product_data,feature)
-	ax.bar(xs,ys,feature,zdir='y',color='black',alpha=0.8)
+	for colour in ['r','g','b','y']:
+		xs = np.arange(20)
+		cs = [colour] * len(xs)
+		cs[0] = 'c'
 
+	featureProcessed = factor_processed(product_data,feature)
+	ax.bar(ind+(width*it),featureProcessed,width,color=cs)
+	it += 1
 """
 adv_bar = ax.bar(ind+width, advanced, width, color='grey')
 need_bar = ax.bar(ind+(width * 2), satisfies_need, width, color='red')
@@ -74,16 +78,17 @@ person_bar = ax.bar(ind+(width * 10), personalization, width, color='purple')
 
 ax.set_xlim(-width,len(ind)+(width * 10))
 ax.set_ylim(0,20)
+ax.set_ylabel("Frequency")
 ax.set_title("Patterns of product success")
 
-ax.set_yticks(ind+width)
+ax.set_xticks(ind+width)
 
-xtickNames = ax.set_yticklabels(product_array)
+xtickNames = ax.set_xticklabels(product_array)
 
 for tick in ax.yaxis.get_major_ticks():
-	tick.label.set_fontsize(7)
+	tick.label.set_fontsize(10)
 
-plt.setp(product_array)
+plt.setp(xtickNames,fontsize=10)
 
 #ax.legend( (ps_bar[0]), ('Connectivity') )
 
